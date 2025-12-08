@@ -1,0 +1,343 @@
+
+// =================================================================
+// ADHKAR CONSTANTS
+// This file contains the constants for morning (Sabah) and evening (Masaa) supplications.
+// =================================================================
+
+export interface AdhkarItem {
+  id: string; // Unique identifier (e.g., AYA_AL_KURSI)
+  arabic: string; // The Arabic text of the supplication
+  repetitionCount: number; // How many times it should be recited
+  source?: string; // Optional source/reference (e.g., Quranic verse or Hadith)
+  notes?: string; // Any specific notes (e.g., if a greater repetition is preferred)
+}
+
+export interface AdhkarSection {
+  title: string;
+  items: AdhkarItem[];
+}
+
+export interface AdhkarCollection {
+  title: string;
+  sections: AdhkarSection[];
+}
+
+
+// --- Common Texts ---
+
+const AYA_AL_KURSI_ARABIC = `﴿ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ ﴾`;
+
+const SAYYID_AL_ISTIGHFAR_ARABIC = `اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي، فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ.`;
+
+const SOURAH_IKHLAS_ARABIC = `﴿ قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ ﴾`;
+const SOURAH_FALAQ_ARABIC = `﴿ قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِنْ شَرِّ مَا خَلَقَ ۝ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ ﴾`;
+const SOURAH_NAS_ARABIC = `﴿ قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ ﴾`;
+const THREE_QULS_ARABIC = `${SOURAH_IKHLAS_ARABIC}\n${SOURAH_FALAQ_ARABIC}\n${SOURAH_NAS_ARABIC}`;
+
+const BISMILLAH_ALLADHI_ARABIC = `بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ، وَهُوَ السَّمِيعُ الْعَلِيمُ.`;
+
+const RADHEETU_BILLAH_ARABIC = `رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ ﷺ نَبِيًّا.`;
+
+const ALLAHUMMA_AFI_BADANI_ARABIC = `اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ. اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لَا إِلَهَ إِلَّا أَنْتَ.`;
+
+const LA_ILAHA_ILLA_ALLAH_WAHDAHU_ARABIC = `لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ، وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ.`;
+
+const HASBIY_ALLAH_ARABIC = `حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ، عَلَيْهِ تَوَكَّلْتُ، وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ.`;
+
+const SUBHAN_ALLAH_WA_BIHAMDIHI_ARABIC = `سُبْحَانَ اللَّهِ وَبِحَمْدِهِ.`;
+
+const ALLAHUMMA_SALLI_ALA_MUHAMMAD_ARABIC = `اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ.`;
+
+
+// =================================================================
+// 1. MORNING ADHKAR (أذكار الصباح)
+// =================================================================
+
+export const MORNING_ADHKAR: AdhkarCollection = {
+  title: "أذكار الصباح",
+  sections: [
+    {
+      title: "أولًا: ما يُقال مرة واحدة",
+      items: [
+        {
+          id: "SABAH_1_AYAT_AL_KURSI",
+          arabic: AYA_AL_KURSI_ARABIC,
+          repetitionCount: 1,
+          source: "آية الكرسي",
+        },
+        {
+          id: "SABAH_2_SAYYID_AL_ISTIGHFAR",
+          arabic: SAYYID_AL_ISTIGHFAR_ARABIC,
+          repetitionCount: 1,
+          source: "سيد الاستغفار",
+        },
+        {
+          id: "SABAH_3_ASBAHNA_WA_ASBAHA_LMLK_1",
+          arabic: `أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوذُ بِكَ مِنْ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "SABAH_4_ASBAHNA_WA_ASBAHA_LMLK_2",
+          arabic: `أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ رَبِّ الْعَالَمِينَ، اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذَا الْيَوْمِ: فَتْحَهُ، وَنَصْرَهُ، وَنُورَهُ، وَبَرَكَتَهُ، وَهُدَاهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِيهِ وَشَرِّ مَا بَعْدَهُ.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "SABAH_5_ASBAHNA_ALA_FITRATI_AL_ISLAM",
+          arabic: `أَصْبَحْنَا عَلَى فِطْرَةِ الْإِسْلَامِ، وَعَلَى كَلِمَةِ الْإِخْلَاصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ ﷺ، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ حَنِيفًا مُسْلِمًا وَمَا كَانَ مِنْ الْمُشْرِكِينَ.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "SABAH_6_ALLAHUMMA_BIKA_ASBAHNA",
+          arabic: `اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "SABAH_7_ALLAHUMMA_MA_ASBAHA",
+          arabic: `اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ، فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "SABAH_8_ALLAHUMMA_INNI_ASALUK_AL_AFW",
+          arabic: `اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ وَمِنْ خَلْفِي وَعَنْ يَمِينِي وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "SABAH_9_ALLAHUMMA_INNI_ASALUKA_ILMAN_NAFIAN",
+          arabic: `اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا طَيِّبًا، وَعَمَلًا مُتَقَبَّلًا.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "SABAH_10_ALLAHUMMA_FATIRA_AL_SAMAWAT",
+          arabic: `اللَّهُمَّ فَاطِرَ السَّمَاوَاتِ وَالْأَرْضِ، عَالِمَ الْغَيْبِ وَالشَّهَادَةِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ، وَأَنْ أَقْتَرِفَ عَلَى نَفْسِي سُوءًا أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "SABAH_11_YA_HAYYU_YA_QAYYUM",
+          arabic: `يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ.`,
+          repetitionCount: 1,
+        },
+      ],
+    },
+    {
+      title: "ثانيًا: ما يُقال ثلاث مرات",
+      items: [
+        {
+          id: "SABAH_3_1_THREE_QULS",
+          arabic: THREE_QULS_ARABIC,
+          repetitionCount: 3,
+          source: "سورة الإخلاص والمعوذتين",
+        },
+        {
+          id: "SABAH_3_2_BISMILLAH_ALLADHI",
+          arabic: BISMILLAH_ALLADHI_ARABIC,
+          repetitionCount: 3,
+        },
+        {
+          id: "SABAH_3_3_RADHEETU_BILLAH",
+          arabic: RADHEETU_BILLAH_ARABIC,
+          repetitionCount: 3,
+        },
+        {
+          id: "SABAH_3_4_SUBHANALLAH_WA_BIHAMDIHI_ADADA_KHALQIHI",
+          arabic: `سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ.`,
+          repetitionCount: 3,
+        },
+        {
+          id: "SABAH_3_5_ALLAHUMMA_AFI_BADANI",
+          arabic: ALLAHUMMA_AFI_BADANI_ARABIC,
+          repetitionCount: 3,
+        },
+      ],
+    },
+    {
+      title: "ثالثًا: ما يُقال أربع مرات",
+      items: [
+        {
+          id: "SABAH_4_1_ALLAHUMMA_INNI_USHIDUKA",
+          arabic: `اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلَائِكَتَكَ وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ، وَحْدَكَ لَا شَرِيكَ لَكَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ.`,
+          repetitionCount: 4,
+        },
+      ],
+    },
+    {
+      title: "رابعًا: ما يُقال سبع مرات",
+      items: [
+        {
+          id: "SABAH_7_1_HASBIY_ALLAH",
+          arabic: HASBIY_ALLAH_ARABIC,
+          repetitionCount: 7,
+        },
+      ],
+    },
+    {
+      title: "خامسًا: ما يُقال عشر مرات",
+      items: [
+        {
+          id: "SABAH_10_1_LA_ILAHA_ILLA_ALLAH_WAHDAHU",
+          arabic: LA_ILAHA_ILLA_ALLAH_WAHDAHU_ARABIC,
+          repetitionCount: 10,
+          notes: "[فَإِنْ زَادَهَا إِلَى مِئَةِ مَرَّةٍ فَأَفْضَلُ]",
+        },
+        {
+          id: "SABAH_10_2_ALLAHUMMA_SALLI_ALA_MUHAMMAD",
+          arabic: ALLAHUMMA_SALLI_ALA_MUHAMMAD_ARABIC,
+          repetitionCount: 10,
+        },
+      ],
+    },
+    {
+      title: "سادسًا: ما يُقال مئة مرة",
+      items: [
+        {
+          id: "SABAH_100_1_SUBHAN_ALLAH_WA_BIHAMDIHI",
+          arabic: SUBHAN_ALLAH_WA_BIHAMDIHI_ARABIC,
+          repetitionCount: 100,
+        },
+      ],
+    },
+  ],
+};
+
+// =================================================================
+// 2. EVENING ADHKAR (أذكار المساء)
+// =================================================================
+
+export const EVENING_ADHKAR: AdhkarCollection = {
+  title: "أذكار المساء",
+  sections: [
+    {
+      title: "أولًا: ما يُقال مرة واحدة",
+      items: [
+        {
+          id: "MASAA_1_AYAT_AL_KURSI",
+          arabic: AYA_AL_KURSI_ARABIC,
+          repetitionCount: 1,
+          source: "آية الكرسي",
+        },
+        {
+          id: "MASAA_2_SAYYID_AL_ISTIGHFAR",
+          arabic: SAYYID_AL_ISTIGHFAR_ARABIC,
+          repetitionCount: 1,
+          source: "سيد الاستغفار",
+        },
+        {
+          id: "MASAA_3_AMSAYNA_WA_AMSA_LMLK_1",
+          arabic: `أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "MASAA_4_AMSAYNA_WA_AMSA_LMLK_2",
+          arabic: `أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ رَبِّ الْعَالَمِينَ، اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذِهِ اللَّيْلَةِ: فَتْحَهَا، وَنَصْرَهَا، وَنُورَهَا، وَبَرَكَتَهَا، وَهُدَاهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِيهَا وَشَرِّ مَا بَعْدَهَا.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "MASAA_5_AMSAYNA_ALA_FITRATI_AL_ISLAM",
+          arabic: `أَمْسَيْنَا عَلَى فِطْرَةِ الْإِسْلَامِ، وَعَلَى كَلِمَةِ الْإِخْلَاصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ ﷺ، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ حَنِيفًا مُسْلِمًا وَمَا كَانَ مِنْ الْمُشْرِكِينَ.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "MASAA_6_ALLAHUMMA_BIKA_AMSAYNA",
+          arabic: `اللَّهمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "MASAA_7_ALLAHUMMA_MA_AMSA",
+          arabic: `اللَّهُمَّ مَا أَمْسَى بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ، فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "MASAA_8_ALLAHUMMA_INNI_ASALUK_AL_AFW",
+          arabic: `اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ وَمِنْ خَلْفِي وَعَنْ يَمِينِي وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "MASAA_9_ALLAHUMMA_FATIRA_AL_SAMAWAT",
+          arabic: `اللَّهُمَّ فَاطِرَ السَّمَاوَاتِ وَالْأَرْضِ، عَالِمَ الْغَيْبِ وَالشَّهَادَةِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ، وَأَنْ أَقْتَرِفَ عَلَى نَفْسِي سُوءًا أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ.`,
+          repetitionCount: 1,
+        },
+        {
+          id: "MASAA_10_YA_HAYYU_YA_QAYYUM",
+          arabic: `يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ.`,
+          repetitionCount: 1,
+        },
+      ],
+    },
+    {
+      title: "ثانيًا: ما يُقال ثلاث مرات",
+      items: [
+        {
+          id: "MASAA_3_1_THREE_QULS",
+          arabic: THREE_QULS_ARABIC,
+          repetitionCount: 3,
+          source: "سورة الإخلاص والمعوذتين",
+        },
+        {
+          id: "MASAA_3_2_BISMILLAH_ALLADHI",
+          arabic: BISMILLAH_ALLADHI_ARABIC,
+          repetitionCount: 3,
+        },
+        {
+          id: "MASAA_3_3_RADHEETU_BILLAH",
+          arabic: RADHEETU_BILLAH_ARABIC,
+          repetitionCount: 3,
+        },
+        {
+          id: "MASAA_3_4_ALLAHUMMA_AFI_BADANI",
+          arabic: ALLAHUMMA_AFI_BADANI_ARABIC,
+          repetitionCount: 3,
+        },
+        {
+          id: "MASAA_3_5_AUDHU_BIKALIMAT_ALLAH_TAMMAT",
+          arabic: `أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ.`,
+          repetitionCount: 3,
+        },
+      ],
+    },
+    {
+      title: "ثالثًا: ما يُقال أربع مرات",
+      items: [
+        {
+          id: "MASAA_4_1_ALLAHUMMA_INNI_UMSI_USHIDUK",
+          arabic: `اللَّهُمَّ إِنِّي أَمْسَيْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلَائِكَتَكَ وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ، وَحْدَكَ لَا شَرِيكَ لَكَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ.`,
+          repetitionCount: 4,
+        },
+      ],
+    },
+    {
+      title: "رابعًا: ما يُقال سبع مرات",
+      items: [
+        {
+          id: "MASAA_7_1_HASBIY_ALLAH",
+          arabic: HASBIY_ALLAH_ARABIC,
+          repetitionCount: 7,
+        },
+      ],
+    },
+    {
+      title: "خامسًا: ما يُقال عشر مرات",
+      items: [
+        {
+          id: "MASAA_10_1_LA_ILAHA_ILLA_ALLAH_WAHDAHU",
+          arabic: LA_ILAHA_ILLA_ALLAH_WAHDAHU_ARABIC,
+          repetitionCount: 10,
+          notes: "[فَإِنْ زَادَهَا إِلَى مِئَةِ مَرَّةٍ فَأَفْضَلُ]",
+        },
+        {
+          id: "MASAA_10_2_ALLAHUMMA_SALLI_ALA_MUHAMMAD",
+          arabic: ALLAHUMMA_SALLI_ALA_MUHAMMAD_ARABIC,
+          repetitionCount: 10,
+        },
+      ],
+    },
+    {
+      title: "سادسًا: ما يُقال مئة مرة",
+      items: [
+        {
+          id: "MASAA_100_1_SUBHAN_ALLAH_WA_BIHAMDIHI",
+          arabic: SUBHAN_ALLAH_WA_BIHAMDIHI_ARABIC,
+          repetitionCount: 100,
+        },
+      ],
+    },
+  ],
+};
