@@ -2,8 +2,8 @@
   "short_name": "وردك",
   "name": "وردك | Wirdak",
   "id": "/",
-  "scope": "./",
-  "start_url": "./",
+  "scope": "/",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#f4f1ea",
   "background_color": "#f4f1ea",
@@ -11,16 +11,28 @@
   "description": "تطبيق وردك للأذكار اليومية",
   "icons": [
     {
-      "src": "./icon-192x192.png",
+      "src": "/icon-192x192.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "./icon-512x512.png",
+      "src": "/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
   ]
 }
