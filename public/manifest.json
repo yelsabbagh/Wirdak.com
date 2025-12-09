@@ -1,6 +1,6 @@
 {
-  "short_name": "المسبحة",
-  "name": "المسبحة الإلكترونية الذكية",
+  "short_name": "وردك",
+  "name": "وردك | Wirdak",
   "id": "/",
   "scope": "./",
   "start_url": "./",
@@ -8,7 +8,7 @@
   "theme_color": "#f4f1ea",
   "background_color": "#f4f1ea",
   "orientation": "portrait",
-  "description": "تطبيق مسبحة إلكترونية متطور للأذكار اليومية",
+  "description": "تطبيق وردك للأذكار اليومية",
   "icons": [
     {
       "src": "./icon-192x192.png",

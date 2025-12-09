@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { RotateCcw, Info } from 'lucide-react';
 import { AdhkarItem } from '../data/adhkar';
@@ -120,7 +119,7 @@ export const CounterView: React.FC<CounterViewProps> = ({
                 {/* Target Progress Bar */}
                 <div className="mt-4 w-40 h-1.5 bg-[var(--bg-main)] rounded-full overflow-hidden shadow-inner">
                     <div 
-                        className={`h-full transition-all duration-300 ${isComplete ? 'bg-green-500' : 'bg-[var(--text-primary)]'}`} 
+                        className={`h-full transition-all duration-500 ease-out ${isComplete ? 'bg-green-500' : 'bg-[var(--text-primary)]'}`} 
                         style={{ width: `${progressPercent}%` }} 
                     />
                 </div>

@@ -334,8 +334,8 @@ function App() {
       if (navigator.share) {
           try {
               await navigator.share({
-                  title: 'المسبحة الإلكترونية',
-                  text: `شاركوني قراءة ${currentCollection.title} عبر تطبيق المسبحة الإلكترونية.\n${SHARE_DATA.url}`,
+                  title: 'وردك',
+                  text: `شاركوني قراءة ${currentCollection.title} عبر تطبيق وردك.\n${SHARE_DATA.url}`,
                   url: SHARE_DATA.url
               });
           } catch (err) { console.log(err); }
@@ -367,7 +367,7 @@ function App() {
         <div className="flex items-center gap-3">
             <img 
               src="./icon-192x192.png" 
-              alt="المسبحة" 
+              alt="وردك" 
               className="h-12 w-12 md:h-14 md:w-14 object-contain drop-shadow-sm" 
             />
             <div className="flex items-center gap-1 text-[var(--text-secondary)] text-sm px-2 py-1 rounded-full bg-white/20">
@@ -439,7 +439,7 @@ function App() {
 
       {/* Footer / Copyright */}
       <footer className="text-center py-2 text-[10px] md:text-xs text-[var(--text-muted)] opacity-60">
-        © المسبحة الإلكترونية
+        © وردك | Wirdak
       </footer>
 
       {/* Modals */}
