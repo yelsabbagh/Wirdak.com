@@ -121,7 +121,7 @@ export const MORNING_ADHKAR: AdhkarCollection = {
           id: "SABAH_9_ALLAHUMMA_INNI_ASALUKA_ILMAN_NAFIAN",
           arabic: `اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا طَيِّبًا، وَعَمَلًا مُتَقَبَّلًا.`,
           repetitionCount: 1,
-          evidence: "كان يقول إذا أصبح.",
+          evidence: "",
           reference: "رواه ابن ماجه"
         },
         {

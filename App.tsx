@@ -546,21 +546,36 @@ function App() {
       });
   };
 
+  const handleToggleAll = (ids: string[], shouldShow: boolean) => {
+      setSettings(prev => {
+          const current = new Set(prev.hiddenAdhkarIds);
+          if (shouldShow) {
+              ids.forEach(id => current.delete(id));
+          } else {
+              ids.forEach(id => current.add(id));
+          }
+          return {
+              ...prev,
+              hiddenAdhkarIds: Array.from(current)
+          };
+      });
+  };
+
   // Share logic
   const shareGeneric = async () => {
       if (navigator.share) {
           try {
               await navigator.share({
                   title: 'وردك',
-                  text: `شاركوني قراءة ${currentCollection.title} عبر تطبيق وردك.\n${SHARE_DATA.url}`,
-                  url: SHARE_DATA.url
-              });
-          } catch (err) { console.log(err); }
-      } else {
-          navigator.clipboard.writeText(SHARE_DATA.url);
-          alert('تم نسخ الرابط!');
-      }
-  };
+                  text: `✨ جدد إيمانك واطمئن بذكر الله مع تطبيق "وردك" 📿\n\nتجربة بصرية مريحة وتصميم أنيق يرافقك في ${currentCollection.title} 🌙☀️\n ابدأ وردك الآن 👇\n\nhttps://wirdak.com/\nhttps://wirdak.com/`,
+                   url: SHARE_DATA.url
+               });
+           } catch (err) { console.log(err); }
+       } else {
+           navigator.clipboard.writeText(SHARE_DATA.url);
+           alert('تم نسخ الرابط!');
+       }
+   };
 
   return (
     <div 
@@ -759,6 +774,7 @@ function App() {
         collection={currentCollection}
         hiddenIds={settings.hiddenAdhkarIds}
         onToggle={toggleHiddenId}
+        onToggleAll={handleToggleAll}
       />
       
       <InstallGuideModal 

@@ -24,7 +24,7 @@ export interface AppSettings {
   targetMode: number;
   beadTheme: string;
   hiddenAdhkarIds: string[];
-  sessionsCompleted: number; // Track how many times user completed all adhkar
+  sessionsCompleted?: number; // Track how many times user completed all adhkar
   
   // Notification Settings
   notificationsEnabled: boolean;
