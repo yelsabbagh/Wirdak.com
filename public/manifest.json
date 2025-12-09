@@ -11,14 +11,14 @@
   "description": "تطبيق مسبحة إلكترونية متطور للأذكار اليومية",
   "icons": [
     {
-      "src": "./logo.svg",
-      "type": "image/svg+xml",
+      "src": "./icon-192x192.png",
+      "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "./logo.svg",
-      "type": "image/svg+xml",
+      "src": "./icon-512x512.png",
+      "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
     }

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Settings, Share2, Sun, Moon, AlertTriangle } from 'lucide-react';
 import { SHARE_DATA, BEAD_THEMES } from './constants';
@@ -142,7 +141,7 @@ function App() {
             try {
                 new Notification(title, {
                     body: body,
-                    icon: './logo.svg', // Use relative path
+                    icon: './icon-192x192.png', // Use relative path to PNG
                     tag: 'adhkar-reminder'
                 });
                 lastNotificationRef.current = currentTimeString;
@@ -364,9 +363,9 @@ function App() {
       <header className="px-4 py-3 flex justify-between items-center z-30 bg-[var(--bg-header)]/80 backdrop-blur-md shadow-sm transition-colors duration-500">
         <div className="flex items-center gap-3">
             <img 
-              src="./logo.svg" 
+              src="./icon-192x192.png" 
               alt="المسبحة" 
-              className="h-10 w-10 md:h-12 md:w-12 object-contain drop-shadow-sm" 
+              className="h-12 w-12 md:h-14 md:w-14 object-contain drop-shadow-sm" 
             />
             <div className="flex items-center gap-1 text-[var(--text-secondary)] text-sm px-2 py-1 rounded-full bg-white/20">
                 {isMorning ? <Sun size={14} /> : <Moon size={14} />}

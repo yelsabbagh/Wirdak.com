@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { X, Share, PlusSquare, MoreVertical, Download } from 'lucide-react';
 
@@ -36,7 +35,7 @@ export const InstallGuideModal: React.FC<InstallGuideModalProps> = ({
           
           <div className="text-center space-y-2">
             <div className="mx-auto w-16 h-16 bg-[var(--bg-card)] rounded-xl flex items-center justify-center mb-4 shadow-sm border border-[var(--border-color)]">
-              <img src="./logo.svg" alt="Logo" className="w-10 h-10" />
+              <img src="./icon-192x192.png" alt="Logo" className="w-10 h-10" />
             </div>
             <p className="text-[var(--text-secondary)] text-sm font-medium leading-relaxed">
               للحصول على أفضل تجربة والعمل بدون إنترنت، يرجى تثبيت التطبيق على جهازك.
