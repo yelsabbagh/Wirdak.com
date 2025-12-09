@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { Settings, Share2, Sun, Moon, Download } from 'lucide-react';
+import { Settings, Share2, Sun, Moon, AlertTriangle } from 'lucide-react';
 import { SHARE_DATA, BEAD_THEMES } from './constants';
 import { AppSettings } from './types';
 import { MORNING_ADHKAR, EVENING_ADHKAR } from './data/adhkar';
@@ -9,6 +9,7 @@ import { CounterView } from './components/CounterView';
 import { CustomizeModal } from './components/CustomizeModal';
 import { VerticalProgress } from './components/VerticalProgress';
 import { Celebration } from './components/Celebration';
+import { InstallGuideModal } from './components/InstallGuideModal';
 
 function App() {
   // --- 1. SETTINGS & STATE ---
@@ -43,25 +44,50 @@ function App() {
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(true); // Default true to avoid flash
   
   // PWA Install Prompt State
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
+    // Check if installed
+    const checkInstalled = () => {
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                           (window.navigator as any).standalone === true;
+      setIsInstalled(isStandalone);
+    };
+    
+    checkInstalled();
+    window.addEventListener('resize', checkInstalled);
+
     const handler = (e: any) => {
       e.preventDefault();
       setDeferredPrompt(e);
+      // If the event fires, we are definitely not installed
+      setIsInstalled(false);
     };
     window.addEventListener('beforeinstallprompt', handler);
-    return () => window.removeEventListener('beforeinstallprompt', handler);
+    
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+      window.removeEventListener('resize', checkInstalled);
+    };
   }, []);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+        // No system prompt available, just show instructions
+        setIsInstallModalOpen(true);
+        return;
+    }
+    
+    // Try system prompt
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
     if (outcome === 'accepted') {
       setDeferredPrompt(null);
+      setIsInstallModalOpen(false);
     }
   };
   
@@ -116,7 +142,7 @@ function App() {
             try {
                 new Notification(title, {
                     body: body,
-                    icon: '/logo.svg', // Use logo.svg instead of png
+                    icon: './logo.svg', // Use relative path
                     tag: 'adhkar-reminder'
                 });
                 lastNotificationRef.current = currentTimeString;
@@ -323,12 +349,25 @@ function App() {
         style={themeStyle}
     >
       
+      {/* --- INSTALL WARNING BANNER --- */}
+      {!isInstalled && (
+        <div 
+          onClick={() => setIsInstallModalOpen(true)}
+          className="bg-red-100 text-red-800 text-xs md:text-sm p-2 text-center cursor-pointer flex items-center justify-center gap-2 font-bold z-50 shadow-sm border-b border-red-200"
+        >
+          <AlertTriangle size={14} className="shrink-0 animate-pulse" />
+          <span>التطبيق غير مثبت. اضغط هنا لتثبيته للعمل بدون إنترنت</span>
+        </div>
+      )}
+
       {/* HEADER */}
       <header className="px-4 py-3 flex justify-between items-center z-30 bg-[var(--bg-header)]/80 backdrop-blur-md shadow-sm transition-colors duration-500">
         <div className="flex items-center gap-3">
-            <h1 className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">
-                {currentCollection.title}
-            </h1>
+            <img 
+              src="./logo.svg" 
+              alt="المسبحة" 
+              className="h-10 w-10 md:h-12 md:w-12 object-contain drop-shadow-sm" 
+            />
             <div className="flex items-center gap-1 text-[var(--text-secondary)] text-sm px-2 py-1 rounded-full bg-white/20">
                 {isMorning ? <Sun size={14} /> : <Moon size={14} />}
                 <span>{isMorning ? 'الصباح' : 'المساء'}</span>
@@ -336,20 +375,11 @@ function App() {
         </div>
         
         <div className="flex items-center gap-2">
-            {deferredPrompt && (
-              <button 
-                onClick={handleInstallClick}
-                className="p-2 text-[var(--text-primary)] hover:bg-black/5 rounded-lg transition animate-pulse"
-                title="تثبيت التطبيق"
-              >
-                <Download size={22} />
-              </button>
-            )}
             <button 
                 onClick={() => setIsCustomizeOpen(true)}
                 className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-bold text-[var(--text-primary)] bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl hover:bg-[var(--bg-main)] hover:border-[var(--text-primary)] transition shadow-sm whitespace-nowrap"
             >
-                تخصيص
+                اختر أذكارك
             </button>
             <button 
                 onClick={() => setIsSettingsOpen(true)}
@@ -425,6 +455,13 @@ function App() {
         collection={currentCollection}
         hiddenIds={settings.hiddenAdhkarIds}
         onToggle={toggleHiddenId}
+      />
+      
+      <InstallGuideModal 
+        isOpen={isInstallModalOpen}
+        onClose={() => setIsInstallModalOpen(false)}
+        deferredPrompt={deferredPrompt}
+        onInstallClick={handleInstallClick}
       />
     </div>
   );

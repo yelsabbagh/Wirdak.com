@@ -1,19 +1,8 @@
 
-const CACHE_NAME = 'misbahah-cache-v1';
-const URLS_TO_CACHE = [
-  './',
-  './index.html',
-  './logo.svg',
-  './manifest.json'
-];
+const CACHE_NAME = 'misbahah-offline-v2';
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(URLS_TO_CACHE);
-      })
-  );
+  // Activate immediately
   self.skipWaiting();
 });
 
@@ -33,13 +22,32 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // Only handle http/https requests
+  if (!event.request.url.startsWith('http')) return;
+
+  // We only want to cache assets from our own origin (not external analytics/fonts unless desired)
+  // For this app, we cache everything to ensure full offline capability.
+  
   event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        if (response) {
-          return response;
+    fetch(event.request)
+      .then((networkResponse) => {
+        // Check if we received a valid response
+        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+          return networkResponse;
         }
-        return fetch(event.request);
+
+        // Clone the response so we can use it for the browser AND the cache
+        const responseToCache = networkResponse.clone();
+
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseToCache);
+        });
+
+        return networkResponse;
+      })
+      .catch(() => {
+        // Network failed, try to get it from the cache
+        return caches.match(event.request);
       })
   );
 });
