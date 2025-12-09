@@ -11,6 +11,39 @@ import { VerticalProgress } from './components/VerticalProgress';
 import { Celebration } from './components/Celebration';
 import { InstallGuideModal } from './components/InstallGuideModal';
 import { VirtueModal } from './components/VirtueModal';
+import { FreeCounterMode } from './components/FreeCounterMode';
+
+// Custom Icon for Circle of Beads
+const RosaryIcon = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    className={className} 
+    strokeWidth="1.5"
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+  >
+    {/* Main ring wire */}
+    <circle cx="12" cy="12" r="9" className="opacity-30" />
+    
+    {/* Beads around the circle */}
+    <circle cx="12" cy="3" r="1.5" fill="currentColor" stroke="none" />
+    <circle cx="16.5" cy="4.2" r="1.5" fill="currentColor" stroke="none" />
+    <circle cx="19.8" cy="7.5" r="1.5" fill="currentColor" stroke="none" />
+    <circle cx="21" cy="12" r="1.5" fill="currentColor" stroke="none" />
+    <circle cx="19.8" cy="16.5" r="1.5" fill="currentColor" stroke="none" />
+    <circle cx="16.5" cy="19.8" r="1.5" fill="currentColor" stroke="none" />
+    <circle cx="12" cy="21" r="1.5" fill="currentColor" stroke="none" />
+    <circle cx="7.5" cy="19.8" r="1.5" fill="currentColor" stroke="none" />
+    <circle cx="4.2" cy="16.5" r="1.5" fill="currentColor" stroke="none" />
+    <circle cx="3" cy="12" r="1.5" fill="currentColor" stroke="none" />
+    <circle cx="4.2" cy="7.5" r="1.5" fill="currentColor" stroke="none" />
+    <circle cx="7.5" cy="4.2" r="1.5" fill="currentColor" stroke="none" />
+  </svg>
+);
 
 function App() {
   // --- 1. SETTINGS & STATE ---
@@ -49,6 +82,10 @@ function App() {
   const [mainScreenVirtueItem, setMainScreenVirtueItem] = useState<AdhkarItem | null>(null);
   const [isInstalled, setIsInstalled] = useState(true); // Default true to avoid flash
   
+  // Free Mode State
+  const [isFreeModeOpen, setIsFreeModeOpen] = useState(false);
+  const [freeCount, setFreeCount] = useState(0);
+
   // PWA Install Prompt State
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
@@ -318,6 +355,17 @@ function App() {
       setCurrentCount(0);
   };
 
+  // --- FREE MODE ACTIONS ---
+  const handleFreeIncrement = () => {
+    if (settings.vibration && navigator.vibrate) navigator.vibrate(15);
+    playSound(settings.sound);
+    setFreeCount(c => c + 1);
+  };
+
+  const handleFreeReset = () => {
+    setFreeCount(0);
+  };
+
   const toggleHiddenId = (id: string) => {
       setSettings(prev => {
           const current = prev.hiddenAdhkarIds;
@@ -351,6 +399,16 @@ function App() {
         style={themeStyle}
     >
       
+      {/* --- FREE COUNTER OVERLAY --- */}
+      <FreeCounterMode 
+        isOpen={isFreeModeOpen}
+        onClose={() => setIsFreeModeOpen(false)}
+        count={freeCount}
+        onIncrement={handleFreeIncrement}
+        onReset={handleFreeReset}
+        themeId={settings.beadTheme}
+      />
+
       {/* --- INSTALL WARNING BANNER --- */}
       {!isInstalled && (
         <div 
@@ -364,18 +422,26 @@ function App() {
 
       {/* HEADER */}
       <header className="px-4 py-3 flex justify-between items-center z-30 bg-[var(--bg-header)]/80 backdrop-blur-md shadow-sm transition-colors duration-500">
+        
+        {/* Right Side (RTL Start) */}
         <div className="flex items-center gap-3">
-            <img 
-              src="./icon-192x192.png" 
-              alt="وردك" 
-              className="h-12 w-12 md:h-14 md:w-14 object-contain drop-shadow-sm" 
-            />
-            <div className="flex items-center gap-1 text-[var(--text-secondary)] text-sm px-2 py-1 rounded-full bg-white/20">
+             {/* Free Mode Button (Replaced Logo) */}
+             <button 
+                onClick={() => setIsFreeModeOpen(true)}
+                className="flex items-center justify-center w-12 h-12 text-[var(--text-primary)] hover:bg-black/5 rounded-full transition-all hover:scale-105 active:scale-95"
+                title="المسبحة الحرة"
+            >
+                <RosaryIcon size={32} />
+            </button>
+            
+            {/* Time Indicator */}
+            <div className="flex items-center gap-1 text-[var(--text-secondary)] text-sm px-3 py-1.5 rounded-full bg-white/20 border border-white/10">
                 {isMorning ? <Sun size={14} /> : <Moon size={14} />}
-                <span>{isMorning ? 'الصباح' : 'المساء'}</span>
+                <span className="font-medium">{isMorning ? 'الصباح' : 'المساء'}</span>
             </div>
         </div>
         
+        {/* Left Side (RTL End) */}
         <div className="flex items-center gap-2">
             <button 
                 onClick={() => setIsCustomizeOpen(true)}
