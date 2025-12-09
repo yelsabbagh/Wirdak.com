@@ -34,7 +34,7 @@ const SAYYID_AL_ISTIGHFAR_ARABIC = `اللَّهُمَّ أَنْتَ رَبِّ
 const SOURAH_IKHLAS_ARABIC = `قُلۡ هُوَ ٱللَّهُ أَحَدٌ (1) ٱللَّهُ ٱلصَّمَدُ (2) لَمۡ يَلِدۡ وَلَمۡ يُولَدۡ (3) وَلَمۡ يَكُن لَّهُۥ كُفُوًا أَحَدُۢ (4)`;
 const SOURAH_FALAQ_ARABIC = `قُلۡ أَعُوذُ بِرَبِّ ٱلۡفَلَقِ (1) مِن شَرِّ مَا خَلَقَ (2) وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ (3) وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِي ٱلۡعُقَدِ (4) وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ (5)`;
 const SOURAH_NAS_ARABIC = `قُلۡ أَعُوذُ بِرَبِّ ٱلنَّاسِ (1) مَلِكِ ٱلنَّاسِ (2) إِلَٰهِ ٱلنَّاسِ (3) مِن شَرِّ ٱلۡوَسۡوَاسِ ٱلۡخَنَّاسِ (4) ٱلَّذِي يُوَسۡوِسُ فِي صُدُورِ ٱلنَّاسِ (5) مِنَ ٱلۡجِنَّةِ وَٱلنَّاسِ (6)`;
-const THREE_QULS_ARABIC = `${SOURAH_IKHLAS_ARABIC}\n${SOURAH_FALAQ_ARABIC}\n${SOURAH_NAS_ARABIC}`;
+// const THREE_QULS_ARABIC = `${SOURAH_IKHLAS_ARABIC}\n${SOURAH_FALAQ_ARABIC}\n${SOURAH_NAS_ARABIC}`;
 
 const BISMILLAH_ALLADHI_ARABIC = `بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ، وَهُوَ السَّمِيعُ الْعَلِيمُ.`;
 
@@ -140,11 +140,27 @@ export const MORNING_ADHKAR: AdhkarCollection = {
       title: "ثانيًا: ما يُقال ثلاث مرات",
       items: [
         {
-          id: "SABAH_3_1_THREE_QULS",
-          arabic: THREE_QULS_ARABIC,
+          id: "SABAH_IKHLAS",
+          arabic: SOURAH_IKHLAS_ARABIC,
           repetitionCount: 3,
-          source: "سورة الإخلاص والمعوذتين",
-          evidence: "من قالها ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
+          source: "سورة الإخلاص",
+          evidence: "من قالها والمعوذتين ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
+          reference: "رواه أبو داود والترمذي"
+        },
+        {
+          id: "SABAH_FALAQ",
+          arabic: SOURAH_FALAQ_ARABIC,
+          repetitionCount: 3,
+          source: "سورة الفلق",
+          evidence: "من قالها والإخلاص والناس ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
+          reference: "رواه أبو داود والترمذي"
+        },
+        {
+          id: "SABAH_NAS",
+          arabic: SOURAH_NAS_ARABIC,
+          repetitionCount: 3,
+          source: "سورة الناس",
+          evidence: "من قالها والإخلاص والفلق ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
           reference: "رواه أبو داود والترمذي"
         },
         {
@@ -316,11 +332,27 @@ export const EVENING_ADHKAR: AdhkarCollection = {
       title: "ثانيًا: ما يُقال ثلاث مرات",
       items: [
         {
-          id: "MASAA_3_1_THREE_QULS",
-          arabic: THREE_QULS_ARABIC,
+          id: "MASAA_IKHLAS",
+          arabic: SOURAH_IKHLAS_ARABIC,
           repetitionCount: 3,
-          source: "سورة الإخلاص والمعوذتين",
-          evidence: "من قالها ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
+          source: "سورة الإخلاص",
+          evidence: "من قالها والمعوذتين ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
+          reference: "رواه أبو داود"
+        },
+        {
+          id: "MASAA_FALAQ",
+          arabic: SOURAH_FALAQ_ARABIC,
+          repetitionCount: 3,
+          source: "سورة الفلق",
+          evidence: "من قالها والإخلاص والناس ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
+          reference: "رواه أبو داود"
+        },
+        {
+          id: "MASAA_NAS",
+          arabic: SOURAH_NAS_ARABIC,
+          repetitionCount: 3,
+          source: "سورة الناس",
+          evidence: "من قالها والإخلاص والفلق ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
           reference: "رواه أبو داود"
         },
         {
