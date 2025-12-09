@@ -10,7 +10,7 @@ interface VerticalProgressProps {
 
 export const VerticalProgress: React.FC<VerticalProgressProps> = ({ items, currentIndex }) => {
   return (
-    <div className="h-full flex flex-col items-center py-8 w-12 md:w-16">
+    <div className="h-full flex flex-col items-center py-8 w-6 md:w-12">
       <div className="flex-grow flex flex-col items-center justify-between w-full relative">
         {/* The line connecting the dots */}
         <div className="absolute top-2 bottom-2 w-0.5 bg-[var(--border-color)] z-0" />

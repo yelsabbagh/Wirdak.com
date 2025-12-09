@@ -25,6 +25,11 @@
     <link rel="apple-touch-icon" sizes="512x512" href="/icon-512x512.png" />
     <meta name="theme-color" content="#f4f1ea" />
     <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Google Fonts (Amiri & Scheherazade New for Quranic/Arabic Text) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Scheherazade+New:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
 
     <!-- Apple Mobile Web App Settings -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -39,11 +44,34 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
+      /* Quranic Font - Uthmanic Script */
+      @font-face {
+        font-family: 'Uthmanic';
+        src: url('/fonts/KFGQPC Uthmanic Script HAFS.otf') format('opentype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
           Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
         transition: background-color 0.5s ease;
       }
+      
+      /* Quranic text font */
+      /* Quranic Text Font (Prioritize Uthmanic Local > Scheherazade > Amiri) */
+      .quran-text {
+        font-family: 'Uthmanic', 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', serif;
+        line-height: 2.3 !important;
+      }
+      
+      /* Regular Arabic Text */
+      .arabic-text {
+        font-family: 'Amiri', 'Noto Naskh Arabic', -apple-system, sans-serif;
+        line-height: 2.0 !important;
+      }
+      
       /* Hide scrollbar for clean UI in some areas */
       .no-scrollbar::-webkit-scrollbar {
         display: none;
@@ -53,23 +81,26 @@
         scrollbar-width: none;
       }
 
-      /* Smoother animation for cards */
+      /* Fast, optimized animation for cards - no lag, no flash */
       .animate-smooth-appear {
-        animation: smooth-appear 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation: smooth-appear 0.25s ease-out forwards;
+        will-change: opacity, transform;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
       }
       @keyframes smooth-appear {
         0% {
           opacity: 0;
-          transform: translateY(30px) scale(0.98);
+          transform: translateY(15px) translateZ(0);
         }
         100% {
           opacity: 1;
-          transform: translateY(0) scale(1);
+          transform: translateY(0) translateZ(0);
         }
       }
 
       .animate-fade-in {
-        animation: fade-in 0.4s ease-out forwards;
+        animation: fade-in 0.25s ease-out forwards;
       }
       @keyframes fade-in {
         from {
@@ -80,8 +111,23 @@
         }
       }
 
+      .animate-shake {
+        animation: shake 0.5s ease-in-out infinite;
+      }
+      @keyframes shake {
+        0%, 100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-3px);
+        }
+        75% {
+          transform: translateX(3px);
+        }
+      }
+
       .animate-slide-up {
-        animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation: slide-up 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
       @keyframes slide-up {
         from {

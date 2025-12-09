@@ -58,7 +58,7 @@ export const Celebration: React.FC<CelebrationProps> = ({ onRestart, onShare, ti
             "
           >
             <Share2 size={24} />
-            مشاركة الإنجاز
+            مشاركة الأجر
           </button>
       </div>
     </div>

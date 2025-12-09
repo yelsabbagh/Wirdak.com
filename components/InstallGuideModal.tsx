@@ -35,11 +35,11 @@ export const InstallGuideModal: React.FC<InstallGuideModalProps> = ({
         <div className="p-6 overflow-y-auto space-y-6">
           
           <div className="text-center space-y-2">
-            <div className="mx-auto w-20 h-20 bg-[var(--bg-card)] rounded-full flex items-center justify-center mb-4 shadow-sm border border-[var(--border-color)]">
-              <img src="/icon-192x192.png" alt="App Icon" className="w-16 h-16 rounded-full" />
+            <div className="mx-auto w-28 h-28 bg-[var(--bg-card)] rounded-3xl flex items-center justify-center mb-5 shadow-lg border border-[var(--border-color)]">
+              <img src="/icon-192x192.png" alt="App Icon" className="w-24 h-24 rounded-2xl drop-shadow-sm" />
             </div>
             <p className="text-[var(--text-secondary)] text-sm font-medium leading-relaxed">
-              للحصول على أفضل تجربة والعمل بدون إنترنت، يرجى تثبيت التطبيق على جهازك.
+              للحصول على أفضل تجربة، العمل بدون إنترنت، وضمان وصول الإشعارات، يرجى تثبيت التطبيق.
             </p>
           </div>
 

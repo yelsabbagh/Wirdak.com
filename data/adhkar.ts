@@ -12,6 +12,7 @@ export interface AdhkarItem {
   evidence?: string; // The text of the virtue/reward (Hadith)
   reference?: string; // The narrator/source of the Hadith (e.g. Bukhari)
   notes?: string; // Any specific notes
+  isQuran?: boolean; // True if this is Quranic text (needs special font)
 }
 
 export interface AdhkarSection {
@@ -27,13 +28,13 @@ export interface AdhkarCollection {
 
 // --- Common Texts ---
 
-const AYA_AL_KURSI_ARABIC = `ٱللَّهُ لَآ إِلَٰهَ إِلَّا هُوَ ٱلۡحَيُّ ٱلۡقَيُّومُۚ لَا تَأۡخُذُهُۥ سِنَةٞ وَلَا نَوۡمٞۚ لَّهُۥ مَا فِي ٱلسَّمَٰوَٰتِ وَمَا فِي ٱلۡأَرۡضِۗ مَن ذَا ٱلَّذِي يَشۡفَعُ عِندَهُۥٓ إِلَّا بِإِذۡنِهِۦۚ يَعۡلَمُ مَا بَيۡنَ أَيۡدِيهِمۡ وَمَا خَلۡفَهُمۡۖ وَلَا يُحِيطُونَ بِشَيۡءٖ مِّنۡ عِلۡمِهِۦٓ إِلَّا بِمَا شَآءَۚ وَسِعَ كُرۡسِيُّهُ ٱلسَّمَٰوَٰتِ وَٱلۡأَرۡضَۖ وَلَا يَـُٔودُهُۥ حِفۡظُهُمَاۚ وَهُوَ ٱلۡعَلِيُّ ٱلۡعَظِيمُ`;
+const AYA_AL_KURSI_ARABIC = `ٱللَّهُ لَآ إِلَـٰهَ إِلَّا هُوَ ٱلْحَىُّ ٱلْقَيُّومُ ۚ لَا تَأْخُذُهُۥ سِنَةٌۭ وَلَا نَوْمٌۭ ۚ لَّهُۥ مَا فِى ٱلسَّمَـٰوَٰتِ وَمَا فِى ٱلْأَرْضِ ۗ مَن ذَا ٱلَّذِى يَشْفَعُ عِندَهُۥٓ إِلَّا بِإِذْنِهِۦ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَىْءٍۢ مِّنْ عِلْمِهِۦٓ إِلَّا بِمَا شَآءَ ۚ وَسِعَ كُرْسِيُّهُ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضَ ۖ وَلَا يَـُٔودُهُۥ حِفْظُهُمَا ۚ وَهُوَ ٱلْعَلِىُّ ٱلْعَظِيمُ`;
 
 const SAYYID_AL_ISTIGHFAR_ARABIC = `اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي، فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ.`;
 
-const SOURAH_IKHLAS_ARABIC = `قُلۡ هُوَ ٱللَّهُ أَحَدٌ (1) ٱللَّهُ ٱلصَّمَدُ (2) لَمۡ يَلِدۡ وَلَمۡ يُولَدۡ (3) وَلَمۡ يَكُن لَّهُۥ كُفُوًا أَحَدُۢ (4)`;
-const SOURAH_FALAQ_ARABIC = `قُلۡ أَعُوذُ بِرَبِّ ٱلۡفَلَقِ (1) مِن شَرِّ مَا خَلَقَ (2) وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ (3) وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِي ٱلۡعُقَدِ (4) وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ (5)`;
-const SOURAH_NAS_ARABIC = `قُلۡ أَعُوذُ بِرَبِّ ٱلنَّاسِ (1) مَلِكِ ٱلنَّاسِ (2) إِلَٰهِ ٱلنَّاسِ (3) مِن شَرِّ ٱلۡوَسۡوَاسِ ٱلۡخَنَّاسِ (4) ٱلَّذِي يُوَسۡوِسُ فِي صُدُورِ ٱلنَّاسِ (5) مِنَ ٱلۡجِنَّةِ وَٱلنَّاسِ (6)`;
+const SOURAH_IKHLAS_ARABIC = `قُلْ هُوَ ٱللَّهُ أَحَدٌ (1) ٱللَّهُ ٱلصَّمَدُ (2) لَمْ يَلِدْ وَلَمْ يُولَدْ (3) وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ (4)`;
+const SOURAH_FALAQ_ARABIC = `قُلۡ أَعُوذُ بِرَبِّ ٱلْفَلَقِ (1) مِن شَرِّ مَا خَلَقَ (2) وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ (3) وَمِن شَرِّ ٱلنَّفَّـٰثَـٰتِ فِى ٱلْعُقَدِ (4) وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ (5)`;
+const SOURAH_NAS_ARABIC = `قُلۡ أَعُوذُ بِرَبِّ ٱلنَّاسِ (1) مَلِكِ ٱلنَّاسِ (2) إِلَٰهِ ٱلنَّاسِ (3) مِن شَرِّ ٱلۡوَسۡوَاسِ ٱلۡخَنَّاسِ (4) ٱلَّذِى يُوَسۡوِسُ فِى صُدُورِ ٱلنَّاسِ (5) مِنَ ٱلۡجِنَّةِ وَٱلنَّاسِ (6)`;
 // const THREE_QULS_ARABIC = `${SOURAH_IKHLAS_ARABIC}\n${SOURAH_FALAQ_ARABIC}\n${SOURAH_NAS_ARABIC}`;
 
 const BISMILLAH_ALLADHI_ARABIC = `بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ، وَهُوَ السَّمِيعُ الْعَلِيمُ.`;
@@ -67,7 +68,8 @@ export const MORNING_ADHKAR: AdhkarCollection = {
           repetitionCount: 1,
           source: "آية الكرسي",
           evidence: "من قالها حين يصبح أجير من الجن حتى يمسي ومن قالها حين يمسي أجير من الجن حتى يصبح.",
-          reference: "رواه الحاكم وصححه الألباني"
+          reference: "رواه الحاكم وصححه الألباني",
+          isQuran: true
         },
         {
           id: "SABAH_2_SAYYID_AL_ISTIGHFAR",
@@ -145,7 +147,8 @@ export const MORNING_ADHKAR: AdhkarCollection = {
           repetitionCount: 3,
           source: "سورة الإخلاص",
           evidence: "من قالها والمعوذتين ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
-          reference: "رواه أبو داود والترمذي"
+          reference: "رواه أبو داود والترمذي",
+          isQuran: true
         },
         {
           id: "SABAH_FALAQ",
@@ -153,7 +156,8 @@ export const MORNING_ADHKAR: AdhkarCollection = {
           repetitionCount: 3,
           source: "سورة الفلق",
           evidence: "من قالها والإخلاص والناس ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
-          reference: "رواه أبو داود والترمذي"
+          reference: "رواه أبو داود والترمذي",
+          isQuran: true
         },
         {
           id: "SABAH_NAS",
@@ -161,7 +165,8 @@ export const MORNING_ADHKAR: AdhkarCollection = {
           repetitionCount: 3,
           source: "سورة الناس",
           evidence: "من قالها والإخلاص والفلق ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
-          reference: "رواه أبو داود والترمذي"
+          reference: "رواه أبو داود والترمذي",
+          isQuran: true
         },
         {
           id: "SABAH_3_2_BISMILLAH_ALLADHI",
@@ -267,7 +272,8 @@ export const EVENING_ADHKAR: AdhkarCollection = {
           repetitionCount: 1,
           source: "آية الكرسي",
           evidence: "من قالها حين يصبح أجير من الجن حتى يمسي ومن قالها حين يمسي أجير من الجن حتى يصبح.",
-          reference: "رواه الحاكم"
+          reference: "رواه الحاكم",
+          isQuran: true
         },
         {
           id: "MASAA_2_SAYYID_AL_ISTIGHFAR",
@@ -337,7 +343,8 @@ export const EVENING_ADHKAR: AdhkarCollection = {
           repetitionCount: 3,
           source: "سورة الإخلاص",
           evidence: "من قالها والمعوذتين ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
-          reference: "رواه أبو داود"
+          reference: "رواه أبو داود",
+          isQuran: true
         },
         {
           id: "MASAA_FALAQ",
@@ -345,7 +352,8 @@ export const EVENING_ADHKAR: AdhkarCollection = {
           repetitionCount: 3,
           source: "سورة الفلق",
           evidence: "من قالها والإخلاص والناس ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
-          reference: "رواه أبو داود"
+          reference: "رواه أبو داود",
+          isQuran: true
         },
         {
           id: "MASAA_NAS",
@@ -353,7 +361,8 @@ export const EVENING_ADHKAR: AdhkarCollection = {
           repetitionCount: 3,
           source: "سورة الناس",
           evidence: "من قالها والإخلاص والفلق ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
-          reference: "رواه أبو داود"
+          reference: "رواه أبو داود",
+          isQuran: true
         },
         {
           id: "MASAA_3_2_BISMILLAH_ALLADHI",

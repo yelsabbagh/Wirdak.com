@@ -37,7 +37,7 @@ export const CustomizeModal: React.FC<CustomizeModalProps> = ({
             </div>
 
             {/* List - Added no-scrollbar class here */}
-            <div className="flex-grow overflow-y-auto p-4 space-y-6 no-scrollbar">
+            <div className="flex-grow overflow-y-auto px-4 pb-4 pt-0 space-y-0 no-scrollbar">
             {collection.sections.map((section, idx) => (
                 <div key={idx}>
                 <h3 className="text-sm font-bold text-[var(--text-secondary)] mb-3 sticky top-0 bg-[var(--bg-main)] py-2 border-b border-[var(--border-color)] z-10">

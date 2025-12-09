@@ -56,7 +56,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-fade-in">
-      <div className="bg-[var(--bg-main)] rounded-2xl w-full max-w-sm shadow-2xl overflow-y-auto max-h-[90vh] border border-[var(--border-color)] transition-colors duration-500">
+      <div className="bg-[var(--bg-main)] rounded-2xl w-full max-w-sm shadow-2xl overflow-y-auto no-scrollbar max-h-[90vh] border border-[var(--border-color)] transition-colors duration-500">
         
         {/* Header */}
         <div className="flex justify-between items-center p-4 border-b border-[var(--border-color)] bg-[var(--bg-main)] sticky top-0 z-10">
@@ -160,6 +160,20 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 </div>
              )}
 
+             {/* Test Notification Button (Verification) */}
+             {settings.notificationsEnabled && permissionState === 'granted' && (
+                 <button
+                    onClick={() => {
+                        try {
+                            new Notification('تجربة الإشعار', { body: 'هذا إشعار تجريبي من وردك', icon: '/icon-192x192.png' });
+                        } catch (e) { alert('فشل إرسال الإشعار. تأكد من إعدادات النظام.'); }
+                    }}
+                    className="text-xs text-[var(--text-primary)] underline hover:text-[var(--text-secondary)] transition pt-1 text-center w-full"
+                 >
+                    إرسال إشعار تجريبي للتأكد من العمل
+                 </button>
+             )}
+
              {/* Time Pickers (Only show if enabled) */}
              {settings.notificationsEnabled && permissionState === 'granted' && (
                  <div className="space-y-3 mt-2 animate-slide-up">
@@ -181,8 +195,59 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                             className="bg-transparent text-[var(--text-primary)] font-bold outline-none"
                         />
                     </div>
+
+                    {/* 3rd Reminder (Optional) */}
+                    <div className="p-2 rounded-lg bg-[var(--bg-main)] border border-[var(--border-color)] space-y-2 mt-2">
+                        <div className="flex items-center justify-between">
+                            <label className="flex items-center gap-2 text-sm text-[var(--text-secondary)] font-bold cursor-pointer select-none">
+                                <input 
+                                    type="checkbox"
+                                    checked={settings.thirdReminderEnabled || false}
+                                    onChange={(e) => updateSettings('thirdReminderEnabled', e.target.checked)}
+                                    className="rounded border-gray-300 w-4 h-4 accent-[var(--text-primary)] cursor-pointer"
+                                />
+                                <span>تذكير إضافي</span>
+                            </label>
+                            
+                            {settings.thirdReminderEnabled && (
+                                <input 
+                                    type="time" 
+                                    value={settings.thirdReminderTime || "12:00"}
+                                    onChange={(e) => updateSettings('thirdReminderTime', e.target.value)}
+                                    className="bg-transparent text-[var(--text-primary)] font-bold outline-none"
+                                />
+                            )}
+                        </div>
+                        
+                        {settings.thirdReminderEnabled && (
+                             <input 
+                                type="text"
+                                value={settings.thirdReminderLabel || ""}
+                                onChange={(e) => updateSettings('thirdReminderLabel', e.target.value)}
+                                placeholder="عنوان التذكير"
+                                className="w-full text-xs p-1 bg-transparent border-b border-[var(--border-color)] text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)]"
+                             />
+                        )}
+                    </div>
                  </div>
              )}
+          </div>
+
+          {/* Statistics / Session Counter */}
+          <div className="space-y-3 pt-2 border-t border-[var(--border-color)]">
+             <label className="text-sm font-bold text-[var(--text-secondary)] flex items-center gap-2">
+                 الإحصائيات
+             </label>
+             <div className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)] shadow-sm">
+                <div className="text-center">
+                   <div className="text-2xl md:text-3xl font-bold text-[var(--text-primary)] mb-1">
+                      {settings.sessionsCompleted}
+                   </div>
+                   <div className="text-xs md:text-sm text-[var(--text-muted)]">
+                      عدد مرات إتمام جلسة الأذكار
+                   </div>
+                </div>
+             </div>
           </div>
 
         </div>

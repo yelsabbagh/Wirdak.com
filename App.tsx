@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { Settings, Share2, Sun, Moon, AlertTriangle, ListChecks } from 'lucide-react';
+import { Settings, Share2, Sun, Moon, AlertTriangle, ListChecks, CheckCircle2, RotateCcw, MapPinOff, Loader2, ArrowUpLeft } from 'lucide-react';
 import { SHARE_DATA, BEAD_THEMES } from './constants';
 import { AppSettings, AdhkarItem } from './types';
 import { MORNING_ADHKAR, EVENING_ADHKAR } from './data/adhkar';
@@ -12,6 +12,9 @@ import { Celebration } from './components/Celebration';
 import { InstallGuideModal } from './components/InstallGuideModal';
 import { VirtueModal } from './components/VirtueModal';
 import { FreeCounterMode } from './components/FreeCounterMode';
+import { RollingBeadIcon } from './components/RollingBeadIcon';
+import { IntroCard } from './components/IntroCard';
+import { usePrayerTimes } from './hooks/usePrayerTimes';
 
 // Custom Icon for Circle of Beads
 const RosaryIcon = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
@@ -85,6 +88,26 @@ function App() {
   // Free Mode State
   const [isFreeModeOpen, setIsFreeModeOpen] = useState(false);
   const [freeCount, setFreeCount] = useState(0);
+  const [freeCounterGoal, setFreeCounterGoal] = useState<number | null>(null);
+  const [skipFreeModeAnimation, setSkipFreeModeAnimation] = useState(false);
+  
+  // Intro/Started State
+  const [hasStarted, setHasStarted] = useState(false);
+  const [showCustomizeArrow, setShowCustomizeArrow] = useState(false);
+  const [showCustomizeShake, setShowCustomizeShake] = useState(false);
+  
+  // Show customize arrow and shake for 5 seconds after starting
+  useEffect(() => {
+    if (hasStarted) {
+      setShowCustomizeArrow(true);
+      setShowCustomizeShake(true);
+      const timer = setTimeout(() => {
+        setShowCustomizeArrow(false);
+        setShowCustomizeShake(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [hasStarted]);
 
   // PWA Install Prompt State
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
@@ -131,16 +154,84 @@ function App() {
   };
   
   // --- 2. TIME & COLLECTION LOGIC ---
+  const [hasManuallySwitched, setHasManuallySwitched] = useState(false);
+  const { dhikrWindows, timings, error: prayerError, retry: retryPrayerTimes } = usePrayerTimes();
   const [isMorning, setIsMorning] = useState<boolean>(true);
+  
+  const toggleTimeMode = () => {
+    setIsMorning(prev => !prev);
+    setHasManuallySwitched(true);
+  };
+  
+  const [nextPrayerInfo, setNextPrayerInfo] = useState<{name: string, timeLeft: string} | null>(null);
+
+  // Prayer Countdown Timer
+  useEffect(() => {
+    if (!timings) return;
+    const PRAYER_NAMES: {[key: string]: string} = { Fajr: 'الفجر', Sunrise: 'الشروق', Dhuhr: 'الظهر', Asr: 'العصر', Maghrib: 'المغرب', Isha: 'العشاء' };
+    const ORDER = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+
+    const updateTimer = () => {
+        const now = new Date();
+        const nowSec = (now.getHours() * 60 + now.getMinutes()) * 60 + now.getSeconds();
+        let nextDetails = null;
+
+        for (const key of ORDER) {
+            const [h, m] = timings[key].split(':').map(Number);
+            const prayerSec = (h * 60 + m) * 60;
+            if (prayerSec > nowSec) {
+                nextDetails = { key, diff: prayerSec - nowSec };
+                break;
+            }
+        }
+        if (!nextDetails) {
+             const [h, m] = timings['Fajr'].split(':').map(Number);
+             const fajrSec = (h * 60 + m) * 60;
+             nextDetails = { key: 'Fajr', diff: (24 * 3600 - nowSec) + fajrSec };
+        }
+
+        const d = nextDetails.diff;
+        const h = Math.floor(d / 3600);
+        const m = Math.floor((d % 3600) / 60);
+        const s = Math.floor(d % 60);
+        setNextPrayerInfo({
+            name: PRAYER_NAMES[nextDetails.key] || nextDetails.key,
+            timeLeft: `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
+        });
+    };
+    updateTimer();
+    const i = setInterval(updateTimer, 1000);
+    return () => clearInterval(i);
+  }, [timings]);
 
   // Check time on mount and setup interval for Morning/Evening detection
   useEffect(() => {
     const checkTime = () => {
+      if (hasManuallySwitched) return;
+      
       const now = new Date();
-      const hour = now.getHours();
-      // Morning: 3:00 AM (3) to 11:59 AM (11)
-      const morning = hour >= 3 && hour < 12;
-      setIsMorning(morning);
+      
+      if (dhikrWindows) {
+          const currentMinutes = now.getHours() * 60 + now.getMinutes();
+          const parse = (t: string) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+          
+          const fajr = parse(dhikrWindows.morning.start);
+          const dhuhr = parse(dhikrWindows.morning.end);
+          const asr = parse(dhikrWindows.evening.start);
+          
+          if (currentMinutes >= fajr && currentMinutes < dhuhr) {
+             setIsMorning(true); 
+          } else if (currentMinutes >= asr) {
+             setIsMorning(false);
+          } else {
+             if (currentMinutes < dhuhr) setIsMorning(true);
+             else setIsMorning(false);
+          }
+      } else {
+          const hour = now.getHours();
+          const morning = hour >= 3 && hour < 12;
+          setIsMorning(morning);
+      }
     };
     
     checkTime();
@@ -366,6 +457,84 @@ function App() {
     setFreeCount(0);
   };
 
+  // Keyboard Navigation (Desktop)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger if typing in input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      // Free Mode Handling
+      if (isFreeModeOpen) {
+          if (['Space', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+             e.preventDefault();
+             handleFreeIncrement();
+          }
+          return;
+      }
+
+      // Normal Mode Blocking
+      if (isSettingsOpen || isCustomizeOpen || isInstallModalOpen || !hasStarted) return;
+      
+      // Space or Enter = Increment
+      if (e.code === 'Space' || e.code === 'Enter') {
+        e.preventDefault();
+        handleIncrement();
+      }
+      // Arrow Right (in RTL = next) or Arrow Down = Next card
+      else if (e.code === 'ArrowRight' || e.code === 'ArrowDown') {
+        e.preventDefault();
+        if (!isFinished && currentIndex < activeItems.length - 1) {
+          setCurrentIndex(prev => prev + 1);
+          setCurrentCount(0);
+        }
+      }
+      // Arrow Left (in RTL = previous) or Arrow Up = Previous card
+      else if (e.code === 'ArrowLeft' || e.code === 'ArrowUp') {
+        e.preventDefault();
+        if (!isFinished && currentIndex > 0) {
+          setCurrentIndex(prev => prev - 1);
+          setCurrentCount(0);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [
+      isSettingsOpen, isCustomizeOpen, isInstallModalOpen, isFreeModeOpen, hasStarted, isFinished,
+      handleIncrement, handleFreeIncrement,
+      currentIndex, activeItems.length
+  ]);
+
+  // Mouse Wheel Navigation (Desktop)
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      // Free Mode Handling
+      if (isFreeModeOpen) {
+        if (e.deltaY > 0) { // Scroll down
+          e.preventDefault();
+          handleFreeIncrement();
+        }
+        return;
+      }
+
+      // Normal Mode Blocking
+      if (isSettingsOpen || isCustomizeOpen || isInstallModalOpen || !hasStarted) return;
+      
+      // Scroll down = Increment
+      if (e.deltaY > 0) {
+        e.preventDefault();
+        handleIncrement();
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, [
+      isSettingsOpen, isCustomizeOpen, isInstallModalOpen, isFreeModeOpen, hasStarted,
+      handleIncrement, handleFreeIncrement
+  ]);
+
   const toggleHiddenId = (id: string) => {
       setSettings(prev => {
           const current = prev.hiddenAdhkarIds;
@@ -407,6 +576,9 @@ function App() {
         onIncrement={handleFreeIncrement}
         onReset={handleFreeReset}
         themeId={settings.beadTheme}
+        skipAnimation={skipFreeModeAnimation}
+        goal={freeCounterGoal}
+        onGoalChange={setFreeCounterGoal}
       />
 
       {/* --- INSTALL WARNING BANNER --- */}
@@ -425,31 +597,83 @@ function App() {
         
         {/* Right Side (RTL Start) */}
         <div className="flex items-center gap-3">
-             {/* Free Mode Button (Replaced Logo) */}
-             <button 
-                onClick={() => setIsFreeModeOpen(true)}
-                className="flex items-center justify-center w-12 h-12 text-[var(--text-primary)] hover:bg-black/5 rounded-full transition-all hover:scale-105 active:scale-95"
-                title="المسبحة الحرة"
-            >
-                <RosaryIcon size={32} />
-            </button>
+             {/* Free Mode Button - Hidden on intro screen */}
+             {hasStarted && (
+               <button 
+                  onClick={() => {
+                    setSkipFreeModeAnimation(false);
+                    setIsFreeModeOpen(true);
+                  }}
+                  className="flex items-center justify-center w-12 h-12 text-[var(--text-primary)] hover:bg-black/5 rounded-full transition-all hover:scale-105 active:scale-95"
+                  title="المسبحة الحرة"
+              >
+                  <RollingBeadIcon themeId={settings.beadTheme} size={40} />
+              </button>
+             )}
             
-            {/* Time Indicator */}
-            <div className="flex items-center gap-1 text-[var(--text-secondary)] text-sm px-3 py-1.5 rounded-full bg-white/20 border border-white/10">
-                {isMorning ? <Sun size={14} /> : <Moon size={14} />}
-                <span className="font-medium">{isMorning ? 'الصباح' : 'المساء'}</span>
+            {/* Time Indicator Wrapper */}
+            <div className="relative flex flex-col items-center group">
+                <button 
+                    onClick={toggleTimeMode}
+                    className={`
+                        flex items-center gap-1.5 md:gap-2 px-2 md:px-3 py-1.5 rounded-full border text-xs md:text-sm font-bold transition-all duration-300 z-10 active:scale-95
+                        ${isMorning 
+                            ? 'bg-white/20 border-white/10 text-[var(--text-secondary)] hover:bg-white/30' 
+                            : 'bg-[#0f172a]/90 border-white/10 text-slate-100 hover:bg-[#1e293b] shadow-md'
+                        }
+                    `}
+                    title="اضغط للتبديل بين الصباح والمساء"
+                >
+                    {isMorning ? <Sun size={14} /> : <Moon size={14} className="text-blue-200" />}
+                    <span>{isMorning ? 'الصباح' : 'المساء'}</span>
+                </button>
+                
+                {/* Prayer Countdown Badge */}
+                {nextPrayerInfo ? (
+                    <div className="absolute top-full mt-2 bg-[var(--bg-card)]/95 backdrop-blur-md border border-[var(--border-color)] text-[var(--text-primary)] text-[10px] px-2 py-1 rounded-md shadow-lg whitespace-nowrap z-0 animate-fade-in font-medium flex items-center gap-1">
+                        <span>{nextPrayerInfo.name}</span>
+                        <span className="font-mono font-bold text-[var(--text-secondary)]" dir="ltr">{nextPrayerInfo.timeLeft}</span>
+                    </div>
+                ) : prayerError ? (
+                     <button
+                        onClick={retryPrayerTimes}
+                        className="absolute top-full mt-2 bg-red-500/90 hover:bg-red-600 backdrop-blur-md text-white text-[10px] px-2 py-1 rounded-md shadow-lg whitespace-nowrap z-0 animate-fade-in font-medium flex items-center gap-1 cursor-pointer transition-colors"
+                        title="اضغط لتفعيل الموقع"
+                     >
+                        <MapPinOff size={10} />
+                        <span>الموقع؟</span>
+                    </button>
+                ) : (
+                    <div className="absolute top-full mt-2 bg-[var(--bg-card)]/50 backdrop-blur-md border border-[var(--border-color)] text-[var(--text-muted)] text-[10px] px-2 py-1 rounded-md shadow-lg whitespace-nowrap z-0 animate-fade-in font-medium flex items-center gap-1">
+                        <Loader2 size={10} className="animate-spin" />
+                    </div>
+                )}
             </div>
         </div>
         
         {/* Left Side (RTL End) */}
         <div className="flex items-center gap-2">
-            <button 
-                onClick={() => setIsCustomizeOpen(true)}
-                className="flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-bold text-[var(--text-primary)] bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl hover:bg-[var(--bg-main)] hover:border-[var(--text-primary)] transition shadow-sm whitespace-nowrap"
-            >
-                <ListChecks size={18} />
-                <span>اختر أذكارك</span>
-            </button>
+            {/* Customize Button - Hidden on intro screen */}
+            {hasStarted && (
+              <div className="relative">
+                <button 
+                    onClick={() => setIsCustomizeOpen(true)}
+                    className={`flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-bold text-[var(--text-primary)] bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl hover:bg-[var(--bg-main)] hover:border-[var(--text-primary)] transition shadow-sm whitespace-nowrap ${
+                      showCustomizeShake ? 'animate-shake' : ''
+                    }`}
+                >
+                    <ListChecks size={18} />
+                    <span>اختر أذكارك</span>
+                </button>
+                
+                {/* Arrow pointing to customize button - Shows for 5 seconds */}
+                {showCustomizeArrow && (
+                  <div className="hidden md:flex absolute -right-12 top-1/2 -translate-y-1/2 animate-bounce pointer-events-none">
+                    <ArrowUpLeft size={40} className="text-[var(--text-primary)]" strokeWidth={2} />
+                  </div>
+                )}
+              </div>
+            )}
             <button 
                 onClick={() => setIsSettingsOpen(true)}
                 className="p-2 text-[var(--text-primary)] hover:bg-black/5 rounded-lg transition"
@@ -468,14 +692,24 @@ function App() {
         
         {/* Right Sidebar: Vertical Progress (RTL) */}
         <div className="flex-shrink-0 z-20 h-full overflow-y-auto no-scrollbar">
-            {!isFinished && (
+            {!isFinished && hasStarted && (
                 <VerticalProgress items={activeItems} currentIndex={currentIndex} />
             )}
         </div>
 
         {/* Center: Card Area - Removed padding to allow full fill */}
         <div className="flex-grow relative flex items-center justify-center overflow-hidden">
-            {isFinished ? (
+            {!hasStarted ? (
+                <IntroCard 
+                  onStartAdhkar={() => setHasStarted(true)} 
+                  onStartFreeMode={() => {
+                    setHasStarted(true);
+                    setSkipFreeModeAnimation(true);
+                    setIsFreeModeOpen(true);
+                  }}
+                  themeId={settings.beadTheme} 
+                />
+            ) : isFinished ? (
                 <Celebration 
                     onRestart={handleRestart} 
                     onShare={shareGeneric}
