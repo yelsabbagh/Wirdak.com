@@ -21,7 +21,7 @@ export interface AppSettings {
   darkMode: boolean;
   vibration: boolean;
   sound: string; 
-  targetMode: number; // Kept for backwards compatibility
+  targetMode: number;
   beadTheme: string;
   hiddenAdhkarIds: string[];
   
@@ -29,14 +29,6 @@ export interface AppSettings {
   notificationsEnabled: boolean;
   morningReminderTime: string; // Format "HH:mm"
   eveningReminderTime: string; // Format "HH:mm"
-}
-
-export interface Dhikr {
-  id: string;
-  text: string;
-  evidence: string;
-  source: string;
-  defaultTarget: number;
 }
 
 // Re-export for compatibility

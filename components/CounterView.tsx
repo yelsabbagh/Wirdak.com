@@ -79,9 +79,11 @@ export const CounterView: React.FC<CounterViewProps> = ({
         <div className="relative z-10 w-full flex-grow flex flex-col items-center px-4 pt-4 pb-0 pointer-events-none overflow-hidden">
             
             {/* Adhkar Text Container */}
-            <div className="w-full flex-grow flex items-center justify-center overflow-y-auto no-scrollbar relative min-h-0">
-                <div className="w-full flex flex-col items-center justify-center py-2">
-                    <h2 className={`${fontSizeClass} font-bold text-[var(--text-primary)] text-center drop-shadow-sm font-arabic transition-all duration-300`}>
+            {/* Fix: Use pointer-events-auto to allow scrolling */}
+            {/* Fix: Use flex-grow with inner min-h-full to prevent clipping when centering overflowed content */}
+            <div className="w-full flex-grow overflow-y-auto no-scrollbar relative min-h-0 pointer-events-auto">
+                <div className="w-full min-h-full flex flex-col items-center justify-center py-4">
+                    <h2 className={`${fontSizeClass} font-bold text-[var(--text-primary)] text-center drop-shadow-sm font-arabic transition-all duration-300 w-full`}>
                        {item.arabic}
                     </h2>
                     
@@ -92,7 +94,7 @@ export const CounterView: React.FC<CounterViewProps> = ({
                            e.stopPropagation();
                            onShowVirtue(item);
                          }}
-                         className="mt-3 pointer-events-auto flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--bg-main)]/50 hover:bg-[var(--text-primary)] hover:text-white text-[var(--text-muted)] text-[10px] md:text-xs transition-all opacity-80 hover:opacity-100 border border-[var(--border-color)]/50"
+                         className="mt-3 pointer-events-auto flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--bg-main)]/50 hover:bg-[var(--text-primary)] hover:text-white text-[var(--text-muted)] text-[10px] md:text-xs transition-all opacity-80 hover:opacity-100 border border-[var(--border-color)]/50 shrink-0"
                        >
                          <Info size={12} />
                          <span>الفضل</span>
@@ -100,7 +102,7 @@ export const CounterView: React.FC<CounterViewProps> = ({
                     )}
 
                     {item.notes && (
-                        <p className="mt-3 text-xs md:text-sm text-[var(--text-muted)] opacity-80 text-center">
+                        <p className="mt-3 text-xs md:text-sm text-[var(--text-muted)] opacity-80 text-center shrink-0">
                             {item.notes}
                         </p>
                     )}
@@ -108,7 +110,7 @@ export const CounterView: React.FC<CounterViewProps> = ({
             </div>
 
             {/* Count Display & Progress */}
-            <div className="flex flex-col items-center shrink-0 py-4 md:py-6">
+            <div className="flex flex-col items-center shrink-0 py-4 md:py-6 w-full">
                 <span className={`
                     text-6xl md:text-7xl font-bold tracking-tighter drop-shadow-sm leading-none transition-all duration-300
                     ${isComplete ? 'text-green-600 scale-110' : 'text-[var(--text-secondary)]'}
