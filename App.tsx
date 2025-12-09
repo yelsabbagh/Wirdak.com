@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { Settings, Share2, Sun, Moon } from 'lucide-react';
+import { Settings, Share2, Sun, Moon, Download } from 'lucide-react';
 import { SHARE_DATA, BEAD_THEMES } from './constants';
 import { AppSettings } from './types';
 import { MORNING_ADHKAR, EVENING_ADHKAR } from './data/adhkar';
@@ -43,6 +43,27 @@ function App() {
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
+  
+  // PWA Install Prompt State
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    const handler = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+    }
+  };
   
   // --- 2. TIME & COLLECTION LOGIC ---
   const [isMorning, setIsMorning] = useState<boolean>(true);
@@ -95,7 +116,7 @@ function App() {
             try {
                 new Notification(title, {
                     body: body,
-                    icon: '/pwa-192x192.png', // Assuming icon exists or browser default
+                    icon: '/logo.svg', // Use logo.svg instead of png
                     tag: 'adhkar-reminder'
                 });
                 lastNotificationRef.current = currentTimeString;
@@ -315,11 +336,20 @@ function App() {
         </div>
         
         <div className="flex items-center gap-2">
+            {deferredPrompt && (
+              <button 
+                onClick={handleInstallClick}
+                className="p-2 text-[var(--text-primary)] hover:bg-black/5 rounded-lg transition animate-pulse"
+                title="تثبيت التطبيق"
+              >
+                <Download size={22} />
+              </button>
+            )}
             <button 
                 onClick={() => setIsCustomizeOpen(true)}
                 className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-bold text-[var(--text-primary)] bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl hover:bg-[var(--bg-main)] hover:border-[var(--text-primary)] transition shadow-sm whitespace-nowrap"
             >
-                تخصيص الأذكار
+                تخصيص
             </button>
             <button 
                 onClick={() => setIsSettingsOpen(true)}
