@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { Settings, Share2, Sun, Moon, AlertTriangle } from 'lucide-react';
+import { Settings, Share2, Sun, Moon, AlertTriangle, ListChecks } from 'lucide-react';
 import { SHARE_DATA, BEAD_THEMES } from './constants';
-import { AppSettings } from './types';
+import { AppSettings, AdhkarItem } from './types';
 import { MORNING_ADHKAR, EVENING_ADHKAR } from './data/adhkar';
 import { SettingsModal } from './components/SettingsModal';
 import { CounterView } from './components/CounterView';
@@ -9,6 +10,7 @@ import { CustomizeModal } from './components/CustomizeModal';
 import { VerticalProgress } from './components/VerticalProgress';
 import { Celebration } from './components/Celebration';
 import { InstallGuideModal } from './components/InstallGuideModal';
+import { VirtueModal } from './components/VirtueModal';
 
 function App() {
   // --- 1. SETTINGS & STATE ---
@@ -44,6 +46,7 @@ function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
+  const [mainScreenVirtueItem, setMainScreenVirtueItem] = useState<AdhkarItem | null>(null);
   const [isInstalled, setIsInstalled] = useState(true); // Default true to avoid flash
   
   // PWA Install Prompt State
@@ -376,9 +379,10 @@ function App() {
         <div className="flex items-center gap-2">
             <button 
                 onClick={() => setIsCustomizeOpen(true)}
-                className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-bold text-[var(--text-primary)] bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl hover:bg-[var(--bg-main)] hover:border-[var(--text-primary)] transition shadow-sm whitespace-nowrap"
+                className="flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-bold text-[var(--text-primary)] bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl hover:bg-[var(--bg-main)] hover:border-[var(--text-primary)] transition shadow-sm whitespace-nowrap"
             >
-                اختر أذكارك
+                <ListChecks size={18} />
+                <span>اختر أذكارك</span>
             </button>
             <button 
                 onClick={() => setIsSettingsOpen(true)}
@@ -419,6 +423,7 @@ function App() {
                         count={currentCount}
                         onIncrement={handleIncrement}
                         onReset={handleResetCurrent}
+                        onShowVirtue={(item) => setMainScreenVirtueItem(item)}
                         themeId={settings.beadTheme}
                     />
                 ) : (
@@ -461,6 +466,12 @@ function App() {
         onClose={() => setIsInstallModalOpen(false)}
         deferredPrompt={deferredPrompt}
         onInstallClick={handleInstallClick}
+      />
+
+      <VirtueModal 
+         isOpen={!!mainScreenVirtueItem}
+         onClose={() => setMainScreenVirtueItem(null)}
+         item={mainScreenVirtueItem}
       />
     </div>
   );

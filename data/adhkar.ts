@@ -8,8 +8,10 @@ export interface AdhkarItem {
   id: string; // Unique identifier (e.g., AYA_AL_KURSI)
   arabic: string; // The Arabic text of the supplication
   repetitionCount: number; // How many times it should be recited
-  source?: string; // Optional source/reference (e.g., Quranic verse or Hadith)
-  notes?: string; // Any specific notes (e.g., if a greater repetition is preferred)
+  source?: string; // Optional Title/Heading (e.g. "Ayat Al Kursi")
+  evidence?: string; // The text of the virtue/reward (Hadith)
+  reference?: string; // The narrator/source of the Hadith (e.g. Bukhari)
+  notes?: string; // Any specific notes
 }
 
 export interface AdhkarSection {
@@ -64,57 +66,73 @@ export const MORNING_ADHKAR: AdhkarCollection = {
           arabic: AYA_AL_KURSI_ARABIC,
           repetitionCount: 1,
           source: "آية الكرسي",
+          evidence: "من قالها حين يصبح أجير من الجن حتى يمسي ومن قالها حين يمسي أجير من الجن حتى يصبح.",
+          reference: "رواه الحاكم وصححه الألباني"
         },
         {
           id: "SABAH_2_SAYYID_AL_ISTIGHFAR",
           arabic: SAYYID_AL_ISTIGHFAR_ARABIC,
           repetitionCount: 1,
           source: "سيد الاستغفار",
+          evidence: "من قالها موقنًا بها حين يمسي ومات من ليلته دخل الجنة وكذلك حين يصبح.",
+          reference: "رواه البخاري"
         },
         {
           id: "SABAH_3_ASBAHNA_WA_ASBAHA_LMLK_1",
           arabic: `أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوذُ بِكَ مِنْ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ.`,
           repetitionCount: 1,
+          reference: "رواه مسلم"
         },
         {
           id: "SABAH_4_ASBAHNA_WA_ASBAHA_LMLK_2",
           arabic: `أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ رَبِّ الْعَالَمِينَ، اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذَا الْيَوْمِ: فَتْحَهُ، وَنَصْرَهُ، وَنُورَهُ، وَبَرَكَتَهُ، وَهُدَاهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِيهِ وَشَرِّ مَا بَعْدَهُ.`,
           repetitionCount: 1,
+          reference: "رواه أبو داود"
         },
         {
           id: "SABAH_5_ASBAHNA_ALA_FITRATI_AL_ISLAM",
           arabic: `أَصْبَحْنَا عَلَى فِطْرَةِ الْإِسْلَامِ، وَعَلَى كَلِمَةِ الْإِخْلَاصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ ﷺ، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ حَنِيفًا مُسْلِمًا وَمَا كَانَ مِنْ الْمُشْرِكِينَ.`,
           repetitionCount: 1,
+          reference: "رواه أحمد"
         },
         {
           id: "SABAH_6_ALLAHUMMA_BIKA_ASBAHNA",
           arabic: `اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ.`,
           repetitionCount: 1,
+          reference: "رواه الترمذي"
         },
         {
           id: "SABAH_7_ALLAHUMMA_MA_ASBAHA",
           arabic: `اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ، فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.`,
           repetitionCount: 1,
+          evidence: "من قالها حين يصبح فقد أدى شكر يومه، ومن قالها حين يمسي فقد أدى شكر ليلته.",
+          reference: "رواه أبو داود"
         },
         {
           id: "SABAH_8_ALLAHUMMA_INNI_ASALUK_AL_AFW",
           arabic: `اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ وَمِنْ خَلْفِي وَعَنْ يَمِينِي وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي.`,
           repetitionCount: 1,
+          evidence: "لم يكن رسول الله ﷺ يدع هؤلاء الكلمات حين يمسي وحين يصبح.",
+          reference: "رواه أبو داود"
         },
         {
           id: "SABAH_9_ALLAHUMMA_INNI_ASALUKA_ILMAN_NAFIAN",
           arabic: `اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا طَيِّبًا، وَعَمَلًا مُتَقَبَّلًا.`,
           repetitionCount: 1,
+          evidence: "كان يقول إذا أصبح.",
+          reference: "رواه ابن ماجه"
         },
         {
           id: "SABAH_10_ALLAHUMMA_FATIRA_AL_SAMAWAT",
           arabic: `اللَّهُمَّ فَاطِرَ السَّمَاوَاتِ وَالْأَرْضِ، عَالِمَ الْغَيْبِ وَالشَّهَادَةِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ، وَأَنْ أَقْتَرِفَ عَلَى نَفْسِي سُوءًا أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ.`,
           repetitionCount: 1,
+          reference: "رواه الترمذي"
         },
         {
           id: "SABAH_11_YA_HAYYU_YA_QAYYUM",
           arabic: `يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ.`,
           repetitionCount: 1,
+          reference: "رواه الحاكم"
         },
       ],
     },
@@ -126,26 +144,35 @@ export const MORNING_ADHKAR: AdhkarCollection = {
           arabic: THREE_QULS_ARABIC,
           repetitionCount: 3,
           source: "سورة الإخلاص والمعوذتين",
+          evidence: "من قالها ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
+          reference: "رواه أبو داود والترمذي"
         },
         {
           id: "SABAH_3_2_BISMILLAH_ALLADHI",
           arabic: BISMILLAH_ALLADHI_ARABIC,
           repetitionCount: 3,
+          evidence: "من قالها ثلاثاً إذا أصبح وثلاثاً إذا أمسى لم يضره شيء.",
+          reference: "رواه أبو داود"
         },
         {
           id: "SABAH_3_3_RADHEETU_BILLAH",
           arabic: RADHEETU_BILLAH_ARABIC,
           repetitionCount: 3,
+          evidence: "من قالها ثلاثاً حين يصبح وحين يمسي كان حقاً على الله أن يرضيه يوم القيامة.",
+          reference: "رواه أحمد"
         },
         {
           id: "SABAH_3_4_SUBHANALLAH_WA_BIHAMDIHI_ADADA_KHALQIHI",
           arabic: `سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ.`,
           repetitionCount: 3,
+          evidence: "لقد قلتُ بعدك أربع كلمات، ثلاث مرات، لو وزنت بما قلتِ منذ اليوم لوزنتهن.",
+          reference: "رواه مسلم"
         },
         {
           id: "SABAH_3_5_ALLAHUMMA_AFI_BADANI",
           arabic: ALLAHUMMA_AFI_BADANI_ARABIC,
           repetitionCount: 3,
+          reference: "رواه أبو داود"
         },
       ],
     },
@@ -156,6 +183,8 @@ export const MORNING_ADHKAR: AdhkarCollection = {
           id: "SABAH_4_1_ALLAHUMMA_INNI_USHIDUKA",
           arabic: `اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلَائِكَتَكَ وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ، وَحْدَكَ لَا شَرِيكَ لَكَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ.`,
           repetitionCount: 4,
+          evidence: "من قالها حين يصبح أو يمسي أربع مرات أعتقه الله من النار.",
+          reference: "رواه أبو داود"
         },
       ],
     },
@@ -166,6 +195,8 @@ export const MORNING_ADHKAR: AdhkarCollection = {
           id: "SABAH_7_1_HASBIY_ALLAH",
           arabic: HASBIY_ALLAH_ARABIC,
           repetitionCount: 7,
+          evidence: "من قالها حين يصبح وحين يمسي سبع مرات كفاه الله ما أهمه من أمر الدنيا والآخرة.",
+          reference: "رواه ابن السني"
         },
       ],
     },
@@ -177,11 +208,15 @@ export const MORNING_ADHKAR: AdhkarCollection = {
           arabic: LA_ILAHA_ILLA_ALLAH_WAHDAHU_ARABIC,
           repetitionCount: 10,
           notes: "[فَإِنْ زَادَهَا إِلَى مِئَةِ مَرَّةٍ فَأَفْضَلُ]",
+          evidence: "كانت له عدل عشر رقاب، وكُتبت له مائة حسنة، ومُحيت عنه مائة سيئة، وكانت له حرزًا من الشيطان يومه ذلك حتى يمسي.",
+          reference: "رواه البخاري ومسلم"
         },
         {
           id: "SABAH_10_2_ALLAHUMMA_SALLI_ALA_MUHAMMAD",
           arabic: ALLAHUMMA_SALLI_ALA_MUHAMMAD_ARABIC,
           repetitionCount: 10,
+          evidence: "من صلى عليّ حين يصبح عشراً وحين يمسي عشراً أدركته شفاعتي يوم القيامة.",
+          reference: "رواه الطبراني"
         },
       ],
     },
@@ -192,6 +227,8 @@ export const MORNING_ADHKAR: AdhkarCollection = {
           id: "SABAH_100_1_SUBHAN_ALLAH_WA_BIHAMDIHI",
           arabic: SUBHAN_ALLAH_WA_BIHAMDIHI_ARABIC,
           repetitionCount: 100,
+          evidence: "من قال: سبحان الله وبحمده، في يوم مائة مرة، حطت خطاياه وإن كانت مثل زبد البحر.",
+          reference: "رواه البخاري ومسلم"
         },
       ],
     },
@@ -213,52 +250,65 @@ export const EVENING_ADHKAR: AdhkarCollection = {
           arabic: AYA_AL_KURSI_ARABIC,
           repetitionCount: 1,
           source: "آية الكرسي",
+          evidence: "من قالها حين يصبح أجير من الجن حتى يمسي ومن قالها حين يمسي أجير من الجن حتى يصبح.",
+          reference: "رواه الحاكم"
         },
         {
           id: "MASAA_2_SAYYID_AL_ISTIGHFAR",
           arabic: SAYYID_AL_ISTIGHFAR_ARABIC,
           repetitionCount: 1,
           source: "سيد الاستغفار",
+          evidence: "من قالها موقنًا بها حين يمسي ومات من ليلته دخل الجنة وكذلك حين يصبح.",
+          reference: "رواه البخاري"
         },
         {
           id: "MASAA_3_AMSAYNA_WA_AMSA_LMLK_1",
           arabic: `أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ.`,
           repetitionCount: 1,
+          reference: "رواه مسلم"
         },
         {
           id: "MASAA_4_AMSAYNA_WA_AMSA_LMLK_2",
           arabic: `أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ رَبِّ الْعَالَمِينَ، اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذِهِ اللَّيْلَةِ: فَتْحَهَا، وَنَصْرَهَا، وَنُورَهَا، وَبَرَكَتَهَا، وَهُدَاهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِيهَا وَشَرِّ مَا بَعْدَهَا.`,
           repetitionCount: 1,
+          reference: "رواه أبو داود"
         },
         {
           id: "MASAA_5_AMSAYNA_ALA_FITRATI_AL_ISLAM",
           arabic: `أَمْسَيْنَا عَلَى فِطْرَةِ الْإِسْلَامِ، وَعَلَى كَلِمَةِ الْإِخْلَاصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ ﷺ، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ حَنِيفًا مُسْلِمًا وَمَا كَانَ مِنْ الْمُشْرِكِينَ.`,
           repetitionCount: 1,
+          reference: "رواه أحمد"
         },
         {
           id: "MASAA_6_ALLAHUMMA_BIKA_AMSAYNA",
           arabic: `اللَّهمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ.`,
           repetitionCount: 1,
+          reference: "رواه الترمذي"
         },
         {
           id: "MASAA_7_ALLAHUMMA_MA_AMSA",
           arabic: `اللَّهُمَّ مَا أَمْسَى بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ، فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.`,
           repetitionCount: 1,
+          evidence: "من قالها حين يصبح فقد أدى شكر يومه، ومن قالها حين يمسي فقد أدى شكر ليلته.",
+          reference: "رواه أبو داود"
         },
         {
           id: "MASAA_8_ALLAHUMMA_INNI_ASALUK_AL_AFW",
           arabic: `اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ وَمِنْ خَلْفِي وَعَنْ يَمِينِي وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي.`,
           repetitionCount: 1,
+          reference: "رواه أبو داود"
         },
         {
           id: "MASAA_9_ALLAHUMMA_FATIRA_AL_SAMAWAT",
           arabic: `اللَّهُمَّ فَاطِرَ السَّمَاوَاتِ وَالْأَرْضِ، عَالِمَ الْغَيْبِ وَالشَّهَادَةِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ، وَأَنْ أَقْتَرِفَ عَلَى نَفْسِي سُوءًا أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ.`,
           repetitionCount: 1,
+          reference: "رواه الترمذي"
         },
         {
           id: "MASAA_10_YA_HAYYU_YA_QAYYUM",
           arabic: `يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ.`,
           repetitionCount: 1,
+          reference: "رواه الحاكم"
         },
       ],
     },
@@ -270,26 +320,35 @@ export const EVENING_ADHKAR: AdhkarCollection = {
           arabic: THREE_QULS_ARABIC,
           repetitionCount: 3,
           source: "سورة الإخلاص والمعوذتين",
+          evidence: "من قالها ثلاث مرات حين يصبح وحين يمسي كفته من كل شيء.",
+          reference: "رواه أبو داود"
         },
         {
           id: "MASAA_3_2_BISMILLAH_ALLADHI",
           arabic: BISMILLAH_ALLADHI_ARABIC,
           repetitionCount: 3,
+          evidence: "من قالها ثلاثاً إذا أصبح وثلاثاً إذا أمسى لم يضره شيء.",
+          reference: "رواه أبو داود"
         },
         {
           id: "MASAA_3_3_RADHEETU_BILLAH",
           arabic: RADHEETU_BILLAH_ARABIC,
           repetitionCount: 3,
+          evidence: "من قالها ثلاثاً حين يصبح وحين يمسي كان حقاً على الله أن يرضيه يوم القيامة.",
+          reference: "رواه أحمد"
         },
         {
           id: "MASAA_3_4_ALLAHUMMA_AFI_BADANI",
           arabic: ALLAHUMMA_AFI_BADANI_ARABIC,
           repetitionCount: 3,
+          reference: "رواه أبو داود"
         },
         {
           id: "MASAA_3_5_AUDHU_BIKALIMAT_ALLAH_TAMMAT",
           arabic: `أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ.`,
           repetitionCount: 3,
+          evidence: "من قالها حين يمسي ثلاث مرات لم تضره حمة تلك الليلة.",
+          reference: "رواه أحمد"
         },
       ],
     },
@@ -300,6 +359,8 @@ export const EVENING_ADHKAR: AdhkarCollection = {
           id: "MASAA_4_1_ALLAHUMMA_INNI_UMSI_USHIDUK",
           arabic: `اللَّهُمَّ إِنِّي أَمْسَيْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلَائِكَتَكَ وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ، وَحْدَكَ لَا شَرِيكَ لَكَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ.`,
           repetitionCount: 4,
+          evidence: "من قالها حين يصبح أو يمسي أربع مرات أعتقه الله من النار.",
+          reference: "رواه أبو داود"
         },
       ],
     },
@@ -310,6 +371,8 @@ export const EVENING_ADHKAR: AdhkarCollection = {
           id: "MASAA_7_1_HASBIY_ALLAH",
           arabic: HASBIY_ALLAH_ARABIC,
           repetitionCount: 7,
+          evidence: "من قالها حين يصبح وحين يمسي سبع مرات كفاه الله ما أهمه من أمر الدنيا والآخرة.",
+          reference: "رواه ابن السني"
         },
       ],
     },
@@ -321,11 +384,15 @@ export const EVENING_ADHKAR: AdhkarCollection = {
           arabic: LA_ILAHA_ILLA_ALLAH_WAHDAHU_ARABIC,
           repetitionCount: 10,
           notes: "[فَإِنْ زَادَهَا إِلَى مِئَةِ مَرَّةٍ فَأَفْضَلُ]",
+          evidence: "كانت له عدل عشر رقاب، وكُتبت له مائة حسنة، ومُحيت عنه مائة سيئة، وكانت له حرزًا من الشيطان.",
+          reference: "رواه البخاري ومسلم"
         },
         {
           id: "MASAA_10_2_ALLAHUMMA_SALLI_ALA_MUHAMMAD",
           arabic: ALLAHUMMA_SALLI_ALA_MUHAMMAD_ARABIC,
           repetitionCount: 10,
+          evidence: "من صلى عليّ حين يصبح عشراً وحين يمسي عشراً أدركته شفاعتي يوم القيامة.",
+          reference: "رواه الطبراني"
         },
       ],
     },
@@ -336,6 +403,8 @@ export const EVENING_ADHKAR: AdhkarCollection = {
           id: "MASAA_100_1_SUBHAN_ALLAH_WA_BIHAMDIHI",
           arabic: SUBHAN_ALLAH_WA_BIHAMDIHI_ARABIC,
           repetitionCount: 100,
+          evidence: "من قال: سبحان الله وبحمده، في يوم مائة مرة، حطت خطاياه وإن كانت مثل زبد البحر.",
+          reference: "رواه البخاري ومسلم"
         },
       ],
     },

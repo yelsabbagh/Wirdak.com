@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, Info } from 'lucide-react';
 import { AdhkarItem } from '../data/adhkar';
 import { BeadSlider } from './BeadSlider';
 
@@ -9,6 +9,7 @@ interface CounterViewProps {
   count: number;
   onIncrement: () => void;
   onReset: () => void;
+  onShowVirtue: (item: AdhkarItem) => void;
   themeId: string;
 }
 
@@ -17,6 +18,7 @@ export const CounterView: React.FC<CounterViewProps> = ({
   count,
   onIncrement,
   onReset,
+  onShowVirtue,
   themeId
 }) => {
   const target = item.repetitionCount;
@@ -79,10 +81,25 @@ export const CounterView: React.FC<CounterViewProps> = ({
             
             {/* Adhkar Text Container */}
             <div className="w-full flex-grow flex items-center justify-center overflow-y-auto no-scrollbar relative min-h-0">
-                <div className="w-full flex flex-col justify-center py-2">
+                <div className="w-full flex flex-col items-center justify-center py-2">
                     <h2 className={`${fontSizeClass} font-bold text-[var(--text-primary)] text-center drop-shadow-sm font-arabic transition-all duration-300`}>
                        {item.arabic}
                     </h2>
+                    
+                    {/* Virtue Button (Small, under text) */}
+                    {item.evidence && (
+                       <button
+                         onClick={(e) => {
+                           e.stopPropagation();
+                           onShowVirtue(item);
+                         }}
+                         className="mt-3 pointer-events-auto flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--bg-main)]/50 hover:bg-[var(--text-primary)] hover:text-white text-[var(--text-muted)] text-[10px] md:text-xs transition-all opacity-80 hover:opacity-100 border border-[var(--border-color)]/50"
+                       >
+                         <Info size={12} />
+                         <span>الفضل</span>
+                       </button>
+                    )}
+
                     {item.notes && (
                         <p className="mt-3 text-xs md:text-sm text-[var(--text-muted)] opacity-80 text-center">
                             {item.notes}
